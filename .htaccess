@@ -1,16 +1,10 @@
-# ============================================
-# DESACTIVACIÓN TOTAL DE CACHÉ - Apache
-# Obliga al hosting a ignorar archivos guardados y ejecutar nuestro código real
-# ============================================
+# PROTOCOLO TE LO VENDO CUBA: PURGA TOTAL
 <IfModule mod_headers.c>
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"
     Header set Expires 0
 </IfModule>
 
-# Reglas estándar de WordPress (si existen, se mantienen después)
-# BEGIN WordPress
-# Las directivas (líneas) entre "BEGIN WordPress" y "END WordPress" son
-# generadas dinámicamente, y solo deberían ser modificadas mediante los filtros de WordPress.
-# Cualquier cambio en las directivas entre estos marcadores será sobrescrito.
+# FORZAR EJECUCIÓN DE INDEX.PHP
+DirectoryIndex index.php
 

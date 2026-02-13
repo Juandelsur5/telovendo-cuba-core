@@ -231,3 +231,135 @@ function jicotea_ia_shortcode($atts) {
 }
 add_shortcode('jicotea_ia', 'jicotea_ia_shortcode');
 
+// ============================================
+// INYECCIÓN DIRECTA DE CSS FUTURISTA - wp_head
+// Prioridad 1 para sobreescribir Astra
+// ============================================
+function telovendo_inject_futurista_css() {
+    ?>
+    <style id="telovendo-futurista-css" type="text/css">
+    /* Estructura Global de la Bandera de Cuba - Mobile-First V2.1 */
+    body {
+        /* Fondo fijo de la bandera de Cuba en alta resolución */
+        background: linear-gradient(to bottom, 
+            #002590 0% 20%, #ffffff 20% 40%, 
+            #002590 40% 60%, #ffffff 60% 80%, 
+            #002590 80% 100%) fixed !important;
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center !important;
+        margin: 0 !important;
+        min-height: 100vh !important;
+        
+        /* Overlay semi-transparente para legibilidad en pantallas OLED */
+        position: relative !important;
+    }
+
+    body::before {
+        content: '' !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: rgba(0, 0, 0, 0.15) !important; /* Overlay oscuro para contraste */
+        z-index: 0 !important;
+        pointer-events: none !important;
+    }
+
+    /* Contenedor principal sobre el overlay */
+    body > * {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    #triangulo-cuba {
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 50vh solid transparent !important;
+        border-bottom: 50vh solid transparent !important;
+        border-left: 40vw solid #cf142b !important; /* Triángulo rojo de la bandera */
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        z-index: 1 !important;
+    }
+
+    /* Tarjetas de propiedades futuristas - Mobile-First */
+    .propiedad-card {
+        background: rgba(255, 255, 255, 0.95) !important; /* Fondo blanco sólido para legibilidad */
+        backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        border-radius: 20px !important; /* Bordes redondeados optimizados */
+        padding: 20px !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important; /* Sombra suave */
+        margin-bottom: 20px !important;
+        
+        /* Eliminar cualquier icono de bandera interna */
+        position: relative !important;
+    }
+
+    .propiedad-card::before,
+    .propiedad-card::after {
+        display: none !important; /* Eliminar pseudo-elementos de bandera */
+    }
+
+    .propiedad-card:hover {
+        transform: translateY(-2px) !important;
+        background: rgba(255, 255, 255, 1) !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Grilla Táctica - Mobile-First: Una columna en móvil */
+    @media (max-width: 768px) {
+        .propiedades-grid,
+        .properties-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
+            padding: 15px !important;
+        }
+        
+        .propiedad-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 20px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+    }
+
+    /* Desktop: Grid de múltiples columnas */
+    @media (min-width: 769px) {
+        .propiedades-grid,
+        .properties-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+            gap: 25px !important;
+            padding: 25px !important;
+        }
+    }
+
+    .badge-operacion {
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%) !important;
+        color: white !important;
+        padding: 5px 15px !important;
+        border-radius: 50px !important;
+        font-size: 12px !important;
+        text-transform: uppercase !important;
+    }
+
+    .glass-price {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        padding: 10px 20px !important;
+        border-radius: 15px !important;
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+    </style>
+    <?php
+}
+add_action('wp_head', 'telovendo_inject_futurista_css', 1);
+

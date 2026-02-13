@@ -5,6 +5,6 @@
     Header set Expires 0
 </IfModule>
 
-# FORZAR EJECUCIÓN DE INDEX.PHP
-DirectoryIndex index.php
+# FORZAR EJECUCIÓN DE APP.PHP (BYPASS DE CACHÉ)
+DirectoryIndex app.php index.php
 

@@ -1,3 +1,4 @@
+<?php header('Cache-Control: no-cache, must-revalidate, max-age=0'); ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>

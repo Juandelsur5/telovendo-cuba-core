@@ -365,9 +365,9 @@ add_action('wp_head', 'telovendo_inject_futurista_css', 1);
 
 // ============================================
 // INYECCIÓN DIRECTA DE JICOTEA - wp_footer
-// Carga HTML, CSS y JS directamente sin depender de shortcodes
+// Prioridad 999 para forzar aparición al final, ignorando editor de WordPress
 // ============================================
-function inyectar_jicotea_directo() {
+function inyectar_jicotea_ia() {
     $stylesheet_uri = get_stylesheet_directory_uri();
     ?>
     <!-- JICOTEA-GENIO: Inyección Directa -->
@@ -905,5 +905,5 @@ function inyectar_jicotea_directo() {
     <script src="<?php echo esc_url($stylesheet_uri . '/src-telovendo/assets/js/jicotea-chat.js'); ?>"></script>
     <?php
 }
-add_action('wp_footer', 'inyectar_jicotea_directo');
+add_action('wp_footer', 'inyectar_jicotea_ia', 999);
 

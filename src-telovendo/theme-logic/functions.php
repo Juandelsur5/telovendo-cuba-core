@@ -907,3 +907,46 @@ function inyectar_jicotea_ia() {
 }
 add_action('wp_footer', 'inyectar_jicotea_ia', 999);
 
+// ============================================
+// BYPASS TOTAL: Inyectar Jicotea en el Footer
+// Botón simple de prueba para verificar que el sistema funciona
+// ============================================
+add_action('wp_footer', function() {
+    ?>
+    <style>
+        #jicotea-ia-btn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 9999; 
+            background: #002a8f; 
+            color: white; 
+            padding: 15px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            transition: transform 0.3s ease;
+        }
+        #jicotea-ia-btn:hover {
+            transform: scale(1.1);
+        }
+        .hero-cuba { 
+            background: linear-gradient(to bottom, #002a8f 33%, #ffffff 33%, #ffffff 66%, #cf142b 66%); 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            text-align: center; 
+        }
+    </style>
+    <div id="jicotea-ia-btn" onclick="alert('Jicotea: ¡Hola Ingeniero! Sistema en línea.')">🐢</div>
+    <?php
+}, 999);
+

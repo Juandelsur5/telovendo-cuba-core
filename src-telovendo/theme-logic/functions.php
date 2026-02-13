@@ -181,3 +181,53 @@ function telovendo_enqueue_template_styles() {
 }
 add_action('wp_enqueue_scripts', 'telovendo_enqueue_template_styles');
 
+// Cargar estilo-cuba.css con ALTA PRIORIDAD para sobreescribir Astra
+function telovendo_enqueue_cuba_styles() {
+    // Cargar después de todos los estilos (incluido Astra) con prioridad 999
+    wp_enqueue_style(
+        'estilo-cuba', 
+        get_stylesheet_directory_uri() . '/src-telovendo/theme-logic/estilo-cuba.css', 
+        array(), // Sin dependencias para que se cargue al final
+        '1.0.0'
+    );
+}
+add_action('wp_enqueue_scripts', 'telovendo_enqueue_cuba_styles', 999);
+
+// ============================================
+// SHORTCODE: [jicotea_ia] - Chatbot Flotante
+// ============================================
+function jicotea_ia_shortcode($atts) {
+    // Encolar estilos del chatbot
+    wp_enqueue_style(
+        'jicotea-chat-css',
+        get_stylesheet_directory_uri() . '/src-telovendo/assets/css/jicotea-chat.css',
+        array(),
+        '1.0.0'
+    );
+    
+    // Encolar scripts del chatbot
+    wp_enqueue_script(
+        'jicotea-autocomplete',
+        get_stylesheet_directory_uri() . '/src-telovendo/assets/js/jicotea-autocomplete.js',
+        array(),
+        '1.0.0',
+        true
+    );
+    
+    wp_enqueue_script(
+        'jicotea-chat',
+        get_stylesheet_directory_uri() . '/src-telovendo/assets/js/jicotea-chat.js',
+        array('jicotea-autocomplete'),
+        '1.0.0',
+        true
+    );
+    
+    // Retornar el HTML del anchor del chatbot
+    $output = '<div id="jicotea-ia-anchor">';
+    $output .= '<img src="' . esc_url(get_stylesheet_directory_uri() . '/chatbot jicotea.png') . '" class="jicotea-genio-ia" alt="Jicotea-Genio IA" />';
+    $output .= '</div>';
+    
+    return $output;
+}
+add_shortcode('jicotea_ia', 'jicotea_ia_shortcode');
+

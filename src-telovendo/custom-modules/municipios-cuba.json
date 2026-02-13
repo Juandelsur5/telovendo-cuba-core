@@ -1,0 +1,62 @@
+{
+  "provincias": {
+    "La Habana": {
+      "municipios": {
+        "La Habana": {
+          "barrios": ["Vedado", "Centro Habana", "Habana Vieja", "Miramar", "Playa", "Alamar", "Guanabacoa", "Regla", "San Miguel del Padrón"],
+          "calles_famosas": ["Calle 23", "Malecón", "Paseo del Prado", "Calle Obispo", "Calle O'Reilly", "Avenida de los Presidentes"],
+          "esquinas_famosas": ["L y 23", "G y 23", "23 y 12", "Prado y Neptuno", "Obispo y Mercaderes"]
+        }
+      }
+    },
+    "Pinar del Río": {
+      "municipios": {
+        "Pinar del Río": {
+          "barrios": ["Centro", "Reparto Hermanos Cruz", "Reparto José Martí"],
+          "calles_famosas": ["Calle Martí", "Avenida José Martí"],
+          "esquinas_famosas": ["Martí y Colón"]
+        },
+        "Viñales": {
+          "barrios": ["Centro", "Reparto Los Jazmines"],
+          "calles_famosas": ["Calle Salvador Cisneros"],
+          "esquinas_famosas": []
+        }
+      }
+    },
+    "Santiago de Cuba": {
+      "municipios": {
+        "Santiago de Cuba": {
+          "barrios": ["Centro", "Reparto Vista Alegre", "Reparto Sueño"],
+          "calles_famosas": ["Calle Heredia", "Avenida de las Américas", "Calle Enramadas"],
+          "esquinas_famosas": ["Heredia y Aguilera", "Enramadas y San Pedro"]
+        }
+      }
+    },
+    "Varadero": {
+      "municipios": {
+        "Varadero": {
+          "barrios": ["Centro", "Reparto Kawama"],
+          "calles_famosas": ["Avenida Primera", "Avenida de la Playa"],
+          "esquinas_famosas": []
+        }
+      }
+    },
+    "Trinidad": {
+      "municipios": {
+        "Trinidad": {
+          "barrios": ["Centro Histórico", "Reparto La Popa"],
+          "calles_famosas": ["Calle Real del Jigüe", "Calle Amargura"],
+          "esquinas_famosas": []
+        }
+      }
+    }
+  },
+  "lugares_famosos": {
+    "La Habana": ["El Capitolio", "El Malecón", "La Bodeguita del Medio", "El Floridita", "Plaza de la Revolución", "Fábrica de Arte Cubano"],
+    "Pinar del Río": ["Valle de Viñales", "Cueva del Indio", "Mural de la Prehistoria"],
+    "Santiago de Cuba": ["Castillo del Morro", "Tumba Francesa", "Casa de Diego Velázquez"],
+    "Varadero": ["Playa Varadero", "Cueva de Ambrosio", "Parque Josone"],
+    "Trinidad": ["Valle de los Ingenios", "Playa Ancón", "Museo Romántico"]
+  }
+}
+

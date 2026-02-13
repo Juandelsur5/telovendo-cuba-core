@@ -1,0 +1,95 @@
+/**
+ * Mobile Navigation - Menú Inferior Táctil
+ * Mobile-First V2.1 - Te Lo Vendo Cuba
+ */
+
+/* Menú inferior táctil (Inicio, Explorar, Asistente) */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    z-index: 998; /* Debajo del chat pero sobre contenido */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    height: 60px;
+}
+
+.mobile-bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    transition: all 0.2s;
+    min-height: 48px; /* Tamaño táctil mínimo */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 12px;
+    margin: 0 4px;
+}
+
+.mobile-bottom-nav-item:active {
+    transform: scale(0.95);
+    background: rgba(0, 210, 255, 0.1);
+}
+
+.mobile-bottom-nav-item.active {
+    color: #002590; /* Azul bandera */
+    font-weight: 600;
+}
+
+.mobile-bottom-nav-item.active .mobile-nav-icon {
+    color: #002590;
+    transform: scale(1.1);
+}
+
+.mobile-nav-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+    color: #666;
+}
+
+.mobile-nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Solo mostrar en móvil */
+@media (min-width: 769px) {
+    .mobile-bottom-nav {
+        display: none;
+    }
+}
+
+/* Ajuste de contenido para evitar solapamiento con menú */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 60px; /* Espacio para menú inferior */
+    }
+    
+    /* Ajustar posición del Jicotea cuando hay menú */
+    #jicotea-ia-anchor {
+        bottom: 80px !important;
+    }
+    
+    /* Ajustar chat para no solaparse con menú */
+    .jicotea-chat-container.active {
+        bottom: 60px; /* Sobre el menú inferior */
+        height: calc(90vh - 60px) !important; /* Altura menos menú */
+    }
+}
+

@@ -1,0 +1,121 @@
+/* Estructura Global de la Bandera de Cuba - Mobile-First V2.1 */
+body {
+    /* Fondo fijo de la bandera de Cuba en alta resolución */
+    background: linear-gradient(to bottom, 
+        #002590 0% 20%, #ffffff 20% 40%, 
+        #002590 40% 60%, #ffffff 60% 80%, 
+        #002590 80% 100%) fixed;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    min-height: 100vh;
+    
+    /* Overlay semi-transparente para legibilidad en pantallas OLED */
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15); /* Overlay oscuro para contraste */
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Contenedor principal sobre el overlay */
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+#triangulo-cuba {
+    width: 0;
+    height: 0;
+    border-top: 50vh solid transparent;
+    border-bottom: 50vh solid transparent;
+    border-left: 40vw solid #cf142b; /* Triángulo rojo de la bandera */
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+/* Tarjetas de propiedades futuristas - Mobile-First */
+.propiedad-card {
+    background: rgba(255, 255, 255, 0.95); /* Fondo blanco sólido para legibilidad */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Bordes redondeados optimizados */
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 20px;
+    
+    /* Eliminar cualquier icono de bandera interna */
+    position: relative;
+}
+
+.propiedad-card::before,
+.propiedad-card::after {
+    display: none; /* Eliminar pseudo-elementos de bandera */
+}
+
+.propiedad-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Grilla Táctica - Mobile-First: Una columna en móvil */
+@media (max-width: 768px) {
+    .propiedades-grid,
+    .properties-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+    
+    .propiedad-card {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Desktop: Grid de múltiples columnas */
+@media (min-width: 769px) {
+    .propiedades-grid,
+    .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 25px;
+    }
+}
+
+.badge-operacion {
+    background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.glass-price {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: bold;
+}
+

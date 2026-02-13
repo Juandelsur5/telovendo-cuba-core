@@ -1,45 +1,9 @@
 <?php
-// Cargar el motor de listado de propiedades
-require_once get_stylesheet_directory() . '/../../src-telovendo/property-listing/property-engine.php';
-
-// Cargar el motor de datos RAG para Jicotea-Genio
-require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-data-engine.php';
-
-// Cargar el motor GPS para localización de direcciones
-require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-gps-engine.php';
-
-// Cargar el motor de búsqueda jerárquica
-require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-search-engine.php';
-
-// Motor de visualización Te Lo Vendo Cuba
-add_action('property_price_display', function() {
-    $precio = get_field('precio_usd');
-    if($precio) {
-        echo '<div class="glass-price">$' . number_format($precio) . ' USD</div>';
-    }
-});
-
-// Registrar menú de navegación
-function telovendo_register_menus() {
-    register_nav_menus(array(
-        'primary' => 'Menú Principal'
-    ));
-}
-add_action('after_setup_theme', 'telovendo_register_menus');
-
-// Cargar estilos de plantillas
-function telovendo_enqueue_template_styles() {
-    wp_enqueue_style('telovendo-templates', get_stylesheet_directory_uri() . '/src-telovendo/assets/css/theme-templates.css', array(), '1.0.0');
-}
-add_action('wp_enqueue_scripts', 'telovendo_enqueue_template_styles');
-
 // ============================================
 // INYECCIÓN MASIVA DE DATOS - Hook Seguro
 // Ejecutar visitando: ?ejecutar_poblacion=1
 // ============================================
-
-// Hook de emergencia para poblar taxonomías desde la URL
-add_action('init', function() {
+function inyectar_lugares_cuba() {
     if (isset($_GET['ejecutar_poblacion']) && $_GET['ejecutar_poblacion'] == '1') {
         // Verificar permisos de administrador
         if (!current_user_can('manage_options')) {
@@ -154,6 +118,42 @@ add_action('init', function() {
         }
         
         // Mensaje de éxito - único contenido en pantalla
-        wp_die('Arquitectura de datos activada con éxito.');
+        wp_die('IGNICIÓN EXITOSA: Cuba está poblada.');
+    }
+}
+add_action('after_setup_theme', 'inyectar_lugares_cuba', 1);
+
+// Cargar el motor de listado de propiedades
+require_once get_stylesheet_directory() . '/../../src-telovendo/property-listing/property-engine.php';
+
+// Cargar el motor de datos RAG para Jicotea-Genio
+require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-data-engine.php';
+
+// Cargar el motor GPS para localización de direcciones
+require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-gps-engine.php';
+
+// Cargar el motor de búsqueda jerárquica
+require_once get_stylesheet_directory() . '/src-telovendo/custom-modules/jicotea-search-engine.php';
+
+// Motor de visualización Te Lo Vendo Cuba
+add_action('property_price_display', function() {
+    $precio = get_field('precio_usd');
+    if($precio) {
+        echo '<div class="glass-price">$' . number_format($precio) . ' USD</div>';
     }
 });
+
+// Registrar menú de navegación
+function telovendo_register_menus() {
+    register_nav_menus(array(
+        'primary' => 'Menú Principal'
+    ));
+}
+add_action('after_setup_theme', 'telovendo_register_menus');
+
+// Cargar estilos de plantillas
+function telovendo_enqueue_template_styles() {
+    wp_enqueue_style('telovendo-templates', get_stylesheet_directory_uri() . '/src-telovendo/assets/css/theme-templates.css', array(), '1.0.0');
+}
+add_action('wp_enqueue_scripts', 'telovendo_enqueue_template_styles');
+

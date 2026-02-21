@@ -188,11 +188,26 @@ class AdminConsole {
 							array('table' => $table_name)
 						);
 						$conversations = array();
+						$unread_map = array();
 					} else {
 						$conversations_query = $wpdb->prepare(
 							"SELECT DISTINCT conversation_id FROM {$table_name} ORDER BY id DESC LIMIT 100"
 						);
 						$conversations       = $wpdb->get_col($conversations_query);
+
+						// Batch query for unread counts
+						$unread_query = $wpdb->prepare(
+							"SELECT conversation_id, COUNT(*) as unread_count FROM {$table_name} WHERE user_id != %d GROUP BY conversation_id",
+							$user_id
+						);
+						$unread_results = $wpdb->get_results($unread_query, ARRAY_A);
+
+						$unread_map = array();
+						if ($unread_results) {
+							foreach ($unread_results as $row) {
+								$unread_map[$row['conversation_id']] = (int) $row['unread_count'];
+							}
+						}
 					}
 
 					echo '<h3>Conversations</h3>';
@@ -200,7 +215,7 @@ class AdminConsole {
 
 					foreach ($conversations as $conv_id) {
 						$conv_id_safe = esc_attr($conv_id);
-						$unread_count = ChatManager::count_unread($conv_id, $user_id);
+						$unread_count = $unread_map[$conv_id] ?? 0;
 						$display_text = $conv_id;
 						if ($unread_count > 0) {
 							$display_text .= ' (' . $unread_count . ')';

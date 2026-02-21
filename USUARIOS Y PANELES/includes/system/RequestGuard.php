@@ -65,16 +65,18 @@ class RequestGuard {
 
 		$now        = current_time('mysql');
 
-		// Query existing record
-		$query = $wpdb->prepare(
-			"SELECT * FROM {$table_name} WHERE identifier = %s LIMIT 1",
-			$identifier
+		// Atomic update: increment counter only if window is still valid
+		$update_query = $wpdb->prepare(
+			"UPDATE {$table_name} SET request_count = request_count + 1 WHERE identifier = %s AND TIMESTAMPDIFF(SECOND, window_start, %s) <= 60",
+			$identifier,
+			$now
 		);
 
-		$record = $wpdb->get_row($query, ARRAY_A);
+		$wpdb->query($update_query);
+		$affected_rows = $wpdb->rows_affected;
 
-		if (!$record) {
-			// Insert new row
+		if ($affected_rows === 0) {
+			// Either window expired OR no row exists - reset or insert
 			$result = $wpdb->insert(
 				$table_name,
 				array(
@@ -95,138 +97,16 @@ class RequestGuard {
 			return;
 		}
 
-		// Calculate time difference
-		if (!$record || !isset($record['window_start'])) {
-			// Reset window safely
-			$window_start_str = current_time('mysql');
-			$result = $wpdb->update(
-				$table_name,
-				array(
-					'request_count' => 1,
-					'window_start'  => $window_start_str,
-				),
-				array('identifier' => $identifier),
-				array('%d', '%s'),
-				array('%s')
-			);
+		// Check if limit exceeded after atomic increment
+		$check_query = $wpdb->prepare(
+			"SELECT request_count FROM {$table_name} WHERE identifier = %s LIMIT 1",
+			$identifier
+		);
+		$current_count = (int) $wpdb->get_var($check_query);
 
-			if ($result === false) {
-				\TVC\Audit\AuditLogger::log(
-					'db_update_failed',
-					$user_id ? $user_id : null,
-					array('error' => $wpdb->last_error, 'table' => $table_name)
-				);
-			}
-			return;
-		} else {
-			$window_start_str = $record['window_start'];
-		}
-
-		$window_start = strtotime($window_start_str);
-		if ($window_start === false) {
-			\TVC\Audit\AuditLogger::log(
-				'invalid_date_detected',
-				$user_id ? $user_id : null,
-				array('date' => $window_start_str ?? 'unknown')
-			);
-			// Reset window on invalid date
-			$result = $wpdb->update(
-				$table_name,
-				array(
-					'request_count' => 1,
-					'window_start'  => $now,
-				),
-				array('identifier' => $identifier),
-				array('%d', '%s'),
-				array('%s')
-			);
-
-			if ($result === false) {
-				\TVC\Audit\AuditLogger::log(
-					'db_update_failed',
-					$user_id ? $user_id : null,
-					array('error' => $wpdb->last_error, 'table' => $table_name)
-				);
-			}
-			return;
-		}
-
-		$current_time = strtotime($now);
-		if ($current_time === false) {
-			\TVC\Audit\AuditLogger::log(
-				'invalid_date_detected',
-				$user_id ? $user_id : null,
-				array('date' => $now)
-			);
-			// Reset window on invalid current time
-			$result = $wpdb->update(
-				$table_name,
-				array(
-					'request_count' => 1,
-					'window_start'  => $now,
-				),
-				array('identifier' => $identifier),
-				array('%d', '%s'),
-				array('%s')
-			);
-
-			if ($result === false) {
-				\TVC\Audit\AuditLogger::log(
-					'db_update_failed',
-					$user_id ? $user_id : null,
-					array('error' => $wpdb->last_error, 'table' => $table_name)
-				);
-			}
-			return;
-		}
-
-		$diff_seconds = $current_time - $window_start;
-
-		if ($diff_seconds > 60) {
-			// Reset counter
-			$result = $wpdb->update(
-				$table_name,
-				array(
-					'request_count' => 1,
-					'window_start'  => $now,
-				),
-				array('identifier' => $identifier),
-				array('%d', '%s'),
-				array('%s')
-			);
-
-			if ($result === false) {
-				\TVC\Audit\AuditLogger::log(
-					'db_update_failed',
-					$user_id ? $user_id : null,
-					array('error' => $wpdb->last_error, 'table' => $table_name)
-				);
-			}
-			return;
-		}
-
-		// Check if limit exceeded
-		$current_count = (int) $record['request_count'];
 		if ($current_count >= self::$rate_limit) {
 			AuditLogger::log('rate_limit_exceeded', $user_id ? $user_id : null, array('identifier' => $identifier));
 			wp_die('Too many requests');
-		}
-
-		// Increment counter
-		$result = $wpdb->update(
-			$table_name,
-			array('request_count' => $current_count + 1),
-			array('identifier' => $identifier),
-			array('%d'),
-			array('%s')
-		);
-
-		if ($result === false) {
-			\TVC\Audit\AuditLogger::log(
-				'db_update_failed',
-				$user_id ? $user_id : null,
-				array('error' => $wpdb->last_error, 'table' => $table_name)
-			);
 		}
 	}
 }

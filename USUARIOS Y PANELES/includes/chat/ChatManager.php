@@ -146,21 +146,25 @@ class ChatManager {
 		}
 
 		// Verify conversation ownership
-		$ownership_query = $wpdb->prepare(
-			"SELECT COUNT(*) FROM {$table_name} WHERE conversation_id = %s AND user_id = %d LIMIT 1",
-			$conversation_id,
-			$user_id
-		);
-
-		$ownership_count = (int) $wpdb->get_var($ownership_query);
-
-		if ($ownership_count === 0) {
-			\TVC\Audit\AuditLogger::log(
-				'chat_ownership_violation',
-				$user_id,
-				array('conversation_id' => $conversation_id)
+		if (current_user_can('manage_options')) {
+			// Admin bypass ownership check
+		} else {
+			$ownership_query = $wpdb->prepare(
+				"SELECT COUNT(*) FROM {$table_name} WHERE conversation_id = %s AND user_id = %d LIMIT 1",
+				$conversation_id,
+				$user_id
 			);
-			return false;
+
+			$ownership_count = (int) $wpdb->get_var($ownership_query);
+
+			if ($ownership_count === 0) {
+				\TVC\Audit\AuditLogger::log(
+					'chat_ownership_violation',
+					$user_id,
+					array('conversation_id' => $conversation_id)
+				);
+				return false;
+			}
 		}
 
 		try {

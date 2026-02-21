@@ -140,28 +140,23 @@ class SubscriptionManager {
 			$table_name = $wpdb->prefix . 'tvc_subscription_history';
 
 			if (!\TVC\System\SecurityManager::table_exists($table_name)) {
-				\TVC\Audit\AuditLogger::log(
-					'missing_table_detected',
-					$user_id,
-					array('table' => $table_name)
-				);
-				// Continue execution, just skip history logging
-			} else {
-				$result = $wpdb->insert(
-					$table_name,
-					array(
-						'user_id'    => $user_id,
-						'plan'       => $plan,
-						'started_at' => $start,
-						'ended_at'   => $end,
-						'status'     => 'active',
-					),
-					array('%d', '%s', '%s', '%s', '%s')
-				);
+				throw new \Exception('History table missing');
+			}
 
-				if ($result === false) {
-					throw new \Exception($wpdb->last_error ?: 'Database insert failed');
-				}
+			$result = $wpdb->insert(
+				$table_name,
+				array(
+					'user_id'    => $user_id,
+					'plan'       => $plan,
+					'started_at' => $start,
+					'ended_at'   => $end,
+					'status'     => 'active',
+				),
+				array('%d', '%s', '%s', '%s', '%s')
+			);
+
+			if ($result === false) {
+				throw new \Exception($wpdb->last_error ?: 'Database insert failed');
 			}
 
 			if ($wpdb->last_error) {
@@ -225,28 +220,23 @@ class SubscriptionManager {
 			$table_name = $wpdb->prefix . 'tvc_subscription_history';
 
 			if (!\TVC\System\SecurityManager::table_exists($table_name)) {
-				\TVC\Audit\AuditLogger::log(
-					'missing_table_detected',
-					$user_id,
-					array('table' => $table_name)
-				);
-				// Continue execution, just skip history logging
-			} else {
-				$result = $wpdb->insert(
-					$table_name,
-					array(
-						'user_id'    => $user_id,
-						'plan'       => $plan ? sanitize_text_field($plan) : '',
-						'started_at' => $started_at ? $started_at : current_time('mysql'),
-						'ended_at'   => current_time('mysql'),
-						'status'     => 'cancelled',
-					),
-					array('%d', '%s', '%s', '%s', '%s')
-				);
+				throw new \Exception('History table missing');
+			}
 
-				if ($result === false) {
-					throw new \Exception($wpdb->last_error ?: 'Database insert failed');
-				}
+			$result = $wpdb->insert(
+				$table_name,
+				array(
+					'user_id'    => $user_id,
+					'plan'       => $plan ? sanitize_text_field($plan) : '',
+					'started_at' => $started_at ? $started_at : current_time('mysql'),
+					'ended_at'   => current_time('mysql'),
+					'status'     => 'cancelled',
+				),
+				array('%d', '%s', '%s', '%s', '%s')
+			);
+
+			if ($result === false) {
+				throw new \Exception($wpdb->last_error ?: 'Database insert failed');
 			}
 
 			if ($wpdb->last_error) {

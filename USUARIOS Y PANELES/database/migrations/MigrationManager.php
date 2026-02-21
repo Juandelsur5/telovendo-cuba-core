@@ -108,6 +108,32 @@ class MigrationManager {
 		dbDelta($sql_rate_tracking);
 		dbDelta($sql_subscription_history);
 		dbDelta($sql_user_permissions);
+
+		// Verify all required tables exist
+		$required_tables = array(
+			'tvc_audit_logs',
+			'tvc_chat_messages',
+			'tvc_rate_tracking',
+			'tvc_subscription_history',
+			'tvc_user_permissions',
+		);
+
+		foreach ($required_tables as $table_name) {
+			$table = $wpdb->prefix . $table_name;
+
+			if (!\TVC\System\SecurityManager::table_exists($table)) {
+				\TVC\Audit\AuditLogger::log(
+					'migration_table_missing',
+					null,
+					array('table' => $table)
+				);
+
+				$plugin_file = dirname(dirname(dirname(__FILE__))) . '/telovendo-cuba-enterprise.php';
+				deactivate_plugins(plugin_basename($plugin_file));
+
+				wp_die('Database migration failed. Plugin deactivated.');
+			}
+		}
 	}
 }
 

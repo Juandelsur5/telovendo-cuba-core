@@ -255,7 +255,7 @@ class RealtorPanel {
 							$messages = array();
 						} else {
 							$query      = $wpdb->prepare(
-								"SELECT message, created_at FROM {$table_name} WHERE conversation_id = %s ORDER BY created_at ASC",
+								"SELECT message, created_at FROM {$table_name} WHERE conversation_id = %s ORDER BY created_at ASC LIMIT 200",
 								$conversation_id
 							);
 							$messages   = $wpdb->get_results($query, ARRAY_A);

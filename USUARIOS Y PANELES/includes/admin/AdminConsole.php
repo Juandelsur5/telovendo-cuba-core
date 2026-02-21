@@ -239,7 +239,7 @@ class AdminConsole {
 
 						if (\TVC\System\SecurityManager::table_exists($table_name)) {
 							$messages_query = $wpdb->prepare(
-								"SELECT message, created_at, user_id FROM {$table_name} WHERE conversation_id = %s ORDER BY created_at ASC",
+								"SELECT message, created_at, user_id FROM {$table_name} WHERE conversation_id = %s ORDER BY created_at ASC LIMIT 200",
 								$selected_conversation
 							);
 							$messages       = $wpdb->get_results($messages_query, ARRAY_A);
